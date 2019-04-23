@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace Microwave.test.integration
 {
+    [TestFixture]
     class IT6_UserInterfaceLight
     {
         private UserInterface uutUserInterface_;
