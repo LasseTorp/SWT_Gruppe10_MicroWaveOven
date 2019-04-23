@@ -62,7 +62,6 @@
     <Compile Include="IT6_UserInterfaceLight.cs" />
     <Compile Include="IT3_CookcontrollerTimer.cs" />
     <Compile Include="IT7_AllButtonsUI.cs" />
-    <Compile Include="IT4_CookcontrollerTimer.cs" />
     <Compile Include="IT4_UICookController.cs" />
     <Compile Include="IT8_DoorUserInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
