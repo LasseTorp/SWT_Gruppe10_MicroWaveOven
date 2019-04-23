@@ -9,6 +9,5 @@ namespace Microwave.test.integration
     class IT7_AllButtonsUI
     {
 
-
     }
 }
