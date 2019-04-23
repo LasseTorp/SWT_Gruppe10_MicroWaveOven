@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IT1_CookcontrollerDisplay.cs" />
+    <Compile Include="IT4_CookcontrollerTimer.cs" />
     <Compile Include="IT4_UICookController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
