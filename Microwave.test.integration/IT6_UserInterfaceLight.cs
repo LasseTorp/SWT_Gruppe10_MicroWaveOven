@@ -25,6 +25,7 @@ namespace Microwave.test.integration
         [SetUp]
         public void Setup()
         {
+            output_ = new Output();
             light_ = new Light(output_);
             display_ = new Display(output_);
             powerTube_ = new PowerTube(output_);
