@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IT1_CookcontrollerDisplay.cs" />
+    <Compile Include="IT5_UserInterfaceDisplay.cs" />
+    <Compile Include="IT2_CookcontrollerPowerTube.cs" />
+    <Compile Include="IT6_UserInterfaceLight.cs" />
     <Compile Include="IT3_CookcontrollerTimer.cs" />
     <Compile Include="IT7_AllButtonsUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
