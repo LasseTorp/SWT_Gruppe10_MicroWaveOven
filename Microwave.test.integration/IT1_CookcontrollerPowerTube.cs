@@ -69,6 +69,15 @@ namespace Microwave.test.integration
             Assert.That(() => UUTcookController_.StartCooking(200, 30), Throws.TypeOf<ApplicationException>());
         }
 
+        [Test]
+        public void StopCooking_TurnOff()
+        {
+            UUTcookController_.StartCooking(350, 30);
+
+            UUTcookController_.Stop();
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains("PowerTube turned off")));
+           
+        }
 
     }
 }
