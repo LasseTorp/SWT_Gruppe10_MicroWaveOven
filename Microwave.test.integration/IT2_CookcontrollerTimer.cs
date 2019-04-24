@@ -29,12 +29,13 @@ namespace Microwave.test.integration
             userInterface_ = Substitute.For<IUserInterface>();
             output_ = Substitute.For<IOutput>();
             display_ = Substitute.For<IDisplay>();
+            powertube_ = Substitute.For<IPowerTube>();
 
-            powertube_ = new PowerTube(output_);
+            //powertube_ = new PowerTube(output_);
 
             UUTtimer_ = new Timer();
             UUTCookcontroller_ = new CookController(UUTtimer_, display_, powertube_);
-            UUTCookcontroller_.UI = userInterface_; 
+            UUTCookcontroller_.UI = userInterface_;
 
         }
 
@@ -47,15 +48,72 @@ namespace Microwave.test.integration
         public void StartCooking_WaitingFiveSeconds_CheckingTimeCorrect(int s1, int min, int sec)
         {
 
-            UUTCookcontroller_.StartCooking(333,s1);
+            UUTCookcontroller_.StartCooking(333, s1);
 
             ManualResetEvent pause = new ManualResetEvent(false);
             pause.WaitOne(5100);
 
-            display_.Received().ShowTime(min,sec);
-            
+            display_.Received().ShowTime(min, sec);
+
         }
 
 
+        [TestCase(4)]
+        [TestCase(3)]
+        [TestCase(2)]
+        [TestCase(1)]
+        public void StartCooking_WaitFiveSeconds_TimeExpired_TurnOff(int s1)
+        {
+            UUTCookcontroller_.StartCooking(333, s1);
+
+            ManualResetEvent pause = new ManualResetEvent(false);
+            pause.WaitOne(5100);
+
+            powertube_.Received().TurnOff();
+
+        }
+
+
+        [TestCase(10)]
+        [TestCase(9)]
+        [TestCase(6)]
+        public void StartCooking_WaitFiveSeconds_TimeNotExpired(int s1)
+        {
+            UUTCookcontroller_.StartCooking(333, s1);
+
+            ManualResetEvent pause = new ManualResetEvent(false);
+            pause.WaitOne(5100);
+
+            powertube_.DidNotReceive().TurnOff();
+        }
+
+        [TestCase(4)]
+        [TestCase(3)]
+        [TestCase(2)]
+        [TestCase(1)]
+        public void StartCooking_WaitFiveSeconds_TimeExpired_CookingDone(int s1)
+        {
+            UUTCookcontroller_.StartCooking(333, s1);
+
+            ManualResetEvent pause = new ManualResetEvent(false);
+            pause.WaitOne(5100);
+
+            userInterface_.Received().CookingIsDone();
+
+        }
+
+        [TestCase(10)]
+        [TestCase(9)]
+        [TestCase(6)]
+        public void StartCooking_WaitFiveSeconds_TimeNotExpired_CookingNotDone(int s1)
+        {
+            UUTCookcontroller_.StartCooking(333, s1);
+
+            ManualResetEvent pause = new ManualResetEvent(false);
+            pause.WaitOne(5100);
+
+            userInterface_.DidNotReceive().CookingIsDone();
+        }
+        
     }
 }
