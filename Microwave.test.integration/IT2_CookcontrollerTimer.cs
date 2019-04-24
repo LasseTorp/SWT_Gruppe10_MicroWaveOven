@@ -12,7 +12,7 @@ using NSubstitute;
 
 namespace Microwave.test.integration
 {
-    class IT3_CookcontrollerTimer
+    class IT2_CookcontrollerTimer
     {
         private CookController UUTCookcontroller_;
         private IDisplay display_;

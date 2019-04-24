@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace Microwave.test.integration
 {
     [TestFixture]
-    class IT2_CookcontrollerPowerTube
+    class IT1_CookcontrollerPowerTube
     {
         private CookController UUTcookController_;
         private IUserInterface userInterface_;

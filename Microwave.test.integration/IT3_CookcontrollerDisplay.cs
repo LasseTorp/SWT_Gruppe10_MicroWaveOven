@@ -14,7 +14,7 @@ namespace Microwave.test.integration
 {
 
     [TestFixture]
-    class IT1_CookcontrollerDisplay
+    class IT3_CookcontrollerDisplay
     {
         private CookController UUTcookController_;
         private IUserInterface userInterface_;
