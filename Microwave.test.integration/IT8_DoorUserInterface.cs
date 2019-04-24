@@ -40,9 +40,9 @@ namespace Microwave.test.integration
             powerTube_ = new PowerTube(output_);
 
             cookController_ = new CookController(timer_,display_,powerTube_);
-            cookController_.UI = userInterface_;
+            //cookController_.UI = userInterface_;
 
-            userInterface_ = new UserInterface();//mangler sine parametre 
+            //userInterface_ = new UserInterface();//mangler sine parametre 
         }
 
         [Test]

@@ -34,7 +34,7 @@ namespace Microwave.test.integration
 
 
             //SKAL BUTTONS MED I TESTEN, MULIGVIS FAKES?
-            uutUserInterface_ = new UserInterface();
+            //uutUserInterface_ = new UserInterface();
         }
 
     }

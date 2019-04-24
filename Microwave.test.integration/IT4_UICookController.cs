@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Microwave.test.integration
@@ -22,7 +24,15 @@ namespace Microwave.test.integration
         [SetUp]
         public void setUp()
         {
-            output_ = 
+            output_ = Substitute.For<IOutput>();
+            light_ = Substitute.For<ILight>();
+            display_ = Substitute.For<IDisplay>();
+            timer_ = Substitute.For<ITimer>();
+            powerTube_ = new PowerTube(output_);
+
+            cookController_ = new CookController(timer_, display_, powerTube_);
+
+            //UUTUserInterface_ = new UserInterface();
 
         }
 

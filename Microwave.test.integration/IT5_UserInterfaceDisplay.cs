@@ -39,7 +39,7 @@ namespace Microwave.test.integration
 
             //kan ikke hente UI da interfacet Icookcontroller ikke har den. 
             cookController_ = new CookController(timer_, display_, powerTube_);
-            cookController_.UI = uutUserInterface_;
+            //cookController_.UI = uutUserInterface_;
         }
 
     }
