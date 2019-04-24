@@ -35,29 +35,28 @@ namespace Microwave.test.integration
             UUTdisplay_ = new Display(output_);
             UUTcookController_ = new CookController(timer_,UUTdisplay_,powerTube_);
             UUTcookController_.UI = userInterface_;
-
         }
 
-
-        //ud fra sekvensdiagrammet kan vi se vi skal teste showtime() metoden for at teste forbindelsen imellem display og cookcontroller. 
-        // vi ved ikke helt hvordan vi skal asserte? 
-        [TestCase(99, 59)]
-        [TestCase(12, 1)]
-        [TestCase(0, 12)]
-        [TestCase(12, 0)]
-        [TestCase(0,0)]
-        public void showTime_showWithMinAndSec_outputContainsCorrectMinAndSec(int min, int sec)
+        [TestCase(99, 99, 0)]
+        [TestCase(12, 12, 0)]
+        public void showTime_showWithMinAndSec_outputContainsCorrectMinAndSec(int time, int expectedmin, int expectedsec)
         {
-            UUTdisplay_.ShowTime(min,sec);
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(min)) && s.Contains(Convert.ToString(sec))));
+            for (int i = 0; i < time; i++)
+            {
+                timer_.TimerTick += Raise.Event();
+            }
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(time))));
         }
 
-        [TestCase(100, 59, 10, 59)]
-        [TestCase(12, 100, 12, 10)]
-        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int min, int sec, int expectedmin, int expectedsec)
+        [TestCase(100, 10, 0)]
+        [TestCase(123, 12, 0)]
+        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int time, int expectedmin, int expectedsec)
         {
-            UUTdisplay_.ShowTime(min, sec);
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(expectedmin)) && s.Contains(Convert.ToString(expectedsec))));
+            for (int i = 0; i < time; i++)
+            {
+                timer_.TimerTick += Raise.Event();
+            }
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(time))));
         }
     }
 }
