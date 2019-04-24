@@ -42,5 +42,17 @@ namespace Microwave.test.integration
             //cookController_.UI = uutUserInterface_;
         }
 
+        [TestCase()]
+        public void showPower_showWithPower_outputContainsCorrectPower(int power)
+        {
+
+        }
+
+        [TestCase()]
+        public void showPower_showWithPower_outputContainsWrongPower(int power)
+        {
+
+        }
+
     }
 }
