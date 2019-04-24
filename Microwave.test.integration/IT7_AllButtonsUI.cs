@@ -44,6 +44,5 @@ namespace Microwave.test.integration
             timeButton_ = new Button();
             
         }
-
     }
 }

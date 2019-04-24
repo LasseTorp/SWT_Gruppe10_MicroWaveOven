@@ -18,7 +18,7 @@ namespace Microwave.test.integration
     {
         private CookController UUTcookController_;
         private IUserInterface userInterface_;
-        private IDisplay display_;
+        private IDisplay UUTdisplay_;
         private IPowerTube powerTube_;
         private ITimer timer_;
 
@@ -30,13 +30,10 @@ namespace Microwave.test.integration
             userInterface_ = Substitute.For<IUserInterface>();
             powerTube_ = Substitute.For<IPowerTube>();
             timer_ = Substitute.For<ITimer>();
+            output_ = Substitute.For<IOutput>();
 
-            //denne oprettede vi fordi den var nødvendigfor oprettelsen af display.
-            output_ = new Output();
-
-            display_ = new Display(output_);
-
-            UUTcookController_ = new CookController(timer_,display_,powerTube_);
+            UUTdisplay_ = new Display(output_);
+            UUTcookController_ = new CookController(timer_,UUTdisplay_,powerTube_);
             UUTcookController_.UI = userInterface_;
 
         }
@@ -44,12 +41,23 @@ namespace Microwave.test.integration
 
         //ud fra sekvensdiagrammet kan vi se vi skal teste showtime() metoden for at teste forbindelsen imellem display og cookcontroller. 
         // vi ved ikke helt hvordan vi skal asserte? 
-        [Test]
-        public void ddd()
+        [TestCase(99, 59)]
+        [TestCase(12, 1)]
+        [TestCase(0, 12)]
+        [TestCase(12, 0)]
+        [TestCase(0,0)]
+        public void showTime_showWithMinAndSec_outputContainsCorrectMinAndSec(int min, int sec)
         {
-
+            UUTdisplay_.ShowTime(min,sec);
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(min)) && s.Contains(Convert.ToString(sec))));
         }
 
-
+        [TestCase(100, 59, 10, 59)]
+        [TestCase(12, 100, 12, 10)]
+        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int min, int sec, int expectedmin, int expectedsec)
+        {
+            UUTdisplay_.ShowTime(min, sec);
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(expectedmin)) && s.Contains(Convert.ToString(expectedsec))));
+        }
     }
 }
