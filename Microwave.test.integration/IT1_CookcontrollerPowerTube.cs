@@ -46,7 +46,7 @@ namespace Microwave.test.integration
         {
             UUTcookController_.StartCooking(s1,30);
 
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(s1))));
+            output_.Received(1).OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(s1))));
 
             //Assert.That(output_.rec, Is.EqualTo("PowerTube works with 50 %"));
             // ovenstående hvor metoden recieved benyttes, svarer til at lave en assert
@@ -69,6 +69,15 @@ namespace Microwave.test.integration
             Assert.That(() => UUTcookController_.StartCooking(200, 30), Throws.TypeOf<ApplicationException>());
         }
 
+        [Test]
+        public void StopCooking_TurnOff()
+        {
+            UUTcookController_.StartCooking(350, 30);
+
+            UUTcookController_.Stop();
+            output_.Received(1).OutputLine(Arg.Is<string>(s => s.Contains("PowerTube turned off")));
+           
+        }
 
     }
 }
