@@ -53,7 +53,7 @@ namespace Microwave.test.integration
             ManualResetEvent pause = new ManualResetEvent(false);
             pause.WaitOne(5100);
 
-            display_.Received().ShowTime(min, sec);
+            display_.Received(1).ShowTime(min, sec);
 
         }
 
@@ -69,7 +69,7 @@ namespace Microwave.test.integration
             ManualResetEvent pause = new ManualResetEvent(false);
             pause.WaitOne(5100);
 
-            powertube_.Received().TurnOff();
+            powertube_.Received(1).TurnOff();
 
         }
 
@@ -98,7 +98,7 @@ namespace Microwave.test.integration
             ManualResetEvent pause = new ManualResetEvent(false);
             pause.WaitOne(5100);
 
-            userInterface_.Received().CookingIsDone();
+            userInterface_.Received(1).CookingIsDone();
 
         }
 
