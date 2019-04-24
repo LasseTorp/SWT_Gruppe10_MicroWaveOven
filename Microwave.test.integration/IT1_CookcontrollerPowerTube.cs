@@ -39,28 +39,36 @@ namespace Microwave.test.integration
             UUTcookController_.UI = userInterface_;
         }
 
-        [TestCase(50, "50")]
-        [TestCase(100, "100")]
-        [TestCase(1, "1")]
-        public void startCooking_cookWithPowerAndTime_OutputContainsCorrectPower(int s1, string expectedResult)
+        [TestCase(50)]
+        [TestCase(700)]
+        [TestCase(350)]
+        public void startCooking_cookWithPowerAndTime_OutputContainsCorrectPower(int s1)
         {
             UUTcookController_.StartCooking(s1,30);
 
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(expectedResult)));
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(s1))));
 
             //Assert.That(output_.rec, Is.EqualTo("PowerTube works with 50 %"));
             // ovenstående hvor metoden recieved benyttes, svarer til at lave en assert
         }
 
-        [TestCase(101, "101")]
-        [TestCase(0, "0")]
-        public void startCooking_cookWithPowerAndTime_OutputDontContainsCorrectPower(int s1, string expectedResult)
+        [TestCase(49)]
+        [TestCase(701)]
+        public void startCooking_cookWithPowerAndTimeOutOfRange_ThrowsException(int s1)
         {
-            UUTcookController_.StartCooking(s1, 30);
-
-            output_.DidNotReceive().OutputLine(Arg.Is<string>(s => s.Contains(expectedResult)));
-
-          
+            
+            Assert.That(() => UUTcookController_.StartCooking(s1, 30), Throws.TypeOf<ArgumentOutOfRangeException>());
+            
         }
+
+        [Test]
+        public void startCooking_IsOnAlready_ThrowsException()
+        {
+            UUTcookController_.StartCooking(60,30);
+
+            Assert.That(() => UUTcookController_.StartCooking(200, 30), Throws.TypeOf<ApplicationException>());
+        }
+
+
     }
 }
