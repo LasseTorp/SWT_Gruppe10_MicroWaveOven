@@ -23,6 +23,9 @@ namespace Microwave.test.integration
         private ITimer timer_;
         private ICookController cookController_;
         private IUserInterface userInterface_;
+        private IButton StartCancelButton_;
+        private IButton PowerButton_;
+        private IButton TimeButton_;
 
         private IOutput output_;
 
@@ -32,23 +35,42 @@ namespace Microwave.test.integration
         public void setup()
         {
             timer_ = Substitute.For<ITimer>();
-
-            output_ = new Output();
+            output_ = Substitute.For<IOutput>();
+            display_ = Substitute.For<IDisplay>();
+            powerTube_ = Substitute.For<IPowerTube>();
+            StartCancelButton_ = Substitute.For<IButton>();
+            PowerButton_ = Substitute.For<IButton>();
+            TimeButton_ = Substitute.For<IButton>();
 
             light_ = new Light(output_);
-            display_ = new Display(output_);
-            powerTube_ = new PowerTube(output_);
+           
+            uutDoor_ = new Door();
 
-            cookController_ = new CookController(timer_,display_,powerTube_);
-            //cookController_.UI = userInterface_;
+            cookController_ = new CookController(timer_,display_,powerTube_,userInterface_);
 
-            //userInterface_ = new UserInterface();//mangler sine parametre 
+            userInterface_ = new UserInterface(PowerButton_,TimeButton_,StartCancelButton_,uutDoor_,display_,light_,cookController_);
+
         }
 
         [Test]
-        public void ddd()
+        public void opensDoor_LightOn_LoglineRecieved()
         {
-            //ffff
+            uutDoor_.Open();
+
+            output_.Received(1).OutputLine(Arg.Is<String>(s => s.Contains("on")));
+            
         }
+
+        [Test]
+        public void CloseDoor_LightsOff_LoglineRecieved()
+        {
+            uutDoor_.Open();
+            uutDoor_.Close();
+
+            output_.Received(1).OutputLine(Arg.Is<String>(s => s.Contains("off")));
+
+        }
+
+
     }
 }
