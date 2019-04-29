@@ -50,9 +50,9 @@ namespace Microwave.test.integration
             output_.Received().OutputLine(Arg.Is<string>(s => s.Contains((expected))));
         }
 
-        [TestCase(100, "10:00")]
-        [TestCase(123, "12:00")]
-        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int time, string expected)
+        //[TestCase(6000, "10:00")] DETTE ER KOMMENTERET I RAPPORTEN
+        [TestCase(6000, "100:00")]
+        public void showTime_showWithMinAndSec_outputContainsTooHighMinAndSEC(int time, string expected)
         {
             UUTcookController_.StartCooking(350, time);
             UUTcookController_.OnTimerTick(this, EventArgs.Empty);
