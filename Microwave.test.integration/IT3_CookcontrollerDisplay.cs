@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MicrowaveOvenClasses;
 using MicrowaveOvenClasses.Boundary;
@@ -9,6 +10,7 @@ using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.test.integration
 {
@@ -29,7 +31,7 @@ namespace Microwave.test.integration
         {
             userInterface_ = Substitute.For<IUserInterface>();
             powerTube_ = Substitute.For<IPowerTube>();
-            timer_ = Substitute.For<ITimer>();
+            timer_ = new Timer();
             output_ = Substitute.For<IOutput>();
 
             UUTdisplay_ = new Display(output_);
@@ -37,26 +39,39 @@ namespace Microwave.test.integration
             UUTcookController_.UI = userInterface_;
         }
 
-        [TestCase(99, 99, 0)]
-        [TestCase(12, 12, 0)]
-        public void showTime_showWithMinAndSec_outputContainsCorrectMinAndSec(int time, int expectedmin, int expectedsec)
+        [TestCase(0, "00:00")]
+        [TestCase(10, "00:10")]
+        [TestCase(120, "02:00")]
+        [TestCase(5999, "99:59")]
+        public void showTime_showWithMinAndSec_outputContainsCorrectMinAndSec(int time, string expected)
         {
-            for (int i = 0; i < time; i++)
-            {
-                timer_.TimerTick += Raise.Event();
-            }
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(time))));
+            UUTcookController_.StartCooking(350, time);
+            UUTcookController_.OnTimerTick(this, EventArgs.Empty);
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains((expected))));
         }
 
-        [TestCase(100, 10, 0)]
-        [TestCase(123, 12, 0)]
-        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int time, int expectedmin, int expectedsec)
+        [TestCase(100, "10:00")]
+        [TestCase(123, "12:00")]
+        public void showTime_showWithMinAndSec_outputContainsWrongMinAndSEC(int time, string expected)
         {
-            for (int i = 0; i < time; i++)
-            {
-                timer_.TimerTick += Raise.Event();
-            }
-            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains(Convert.ToString(time))));
+            UUTcookController_.StartCooking(350, time);
+            UUTcookController_.OnTimerTick(this, EventArgs.Empty);
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains((expected))));
         }
+
+        [TestCase(10, "00:05")]
+        [TestCase(120, "01:55")]
+        [TestCase(5999, "99:54")]
+        public void showTime_showWithMinAndSecAfter5Seconds_outputContainsCorrectMinAndSec(int time, string expected)
+        {
+            UUTcookController_.StartCooking(350, time);
+            UUTcookController_.OnTimerTick(this, EventArgs.Empty);
+
+            ManualResetEvent pause = new ManualResetEvent(false);
+            pause.WaitOne(5100);
+
+            output_.Received().OutputLine(Arg.Is<string>(s => s.Contains((expected))));
+        }
+
     }
 }
